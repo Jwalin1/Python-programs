@@ -79,6 +79,7 @@ plt.title('bestfit = {}'.format(Population[0]))
 plt.xlabel('generations')
 plt.ylabel('loss')
 
+#print best fit
 print(Population[0])
 
 plt.show()
