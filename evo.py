@@ -4,7 +4,7 @@ import numpy as np
 def y(x):
   return (-0.1 + 0.3*x - 0.7*x*x + 0.1*x*x*x)
 
-#params[0]=alpha, params[1]=beta, params[2]=gamma, params[0]=delta
+#params[0]=alpha, params[1]=beta, params[2]=gamma, params[3]=delta
 def y_hat(params, x):
   return (params[0] + params[1]*x + params[2]*x*x + params[3]*x*x*x)
 
