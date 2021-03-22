@@ -1,37 +1,37 @@
-This repository contains 3 files containing different approaches to classify Character Trajectories data.
-Data contains 3 channels : x_vel, y_vel and force.
-Data is of the form time series.
-Dimension of data : [n_sample, n_channels, time_steps]
+This repository contains 3 files containing different approaches to classify Character Trajectories data.   <br>
+Data contains 3 channels : x_vel, y_vel and force.    <br>
+Data is of the form time series.    <br>
+Dimension of data : [n_sample, n_channels, time_steps]    <br>
 
-We have 3 channels and times steps have been padded to be of length 182.
-Dimension of data : [n_sample, 3, 182]
+We have 3 channels and times steps have been padded to be of length 182.    <br>
+Dimension of data : [n_sample, 3, 182]    <br>
 
 
 Here are the results:
 
 Simple approaches
-1) Kmeans
-  -params : n_centroids * dim_centroid = 20*(3*182) = 10920
-  -adjusted_mutual_info_score for train data : 0.7134
-  -adjusted_mutual_info_score for test data : 0.7225
+1) Kmeans    <br>
+  -params : n_centroids * dim_centroid = 20*(3*182) = 10920   <br>
+  -adjusted_mutual_info_score for train data : 0.7134   <br>
+  -adjusted_mutual_info_score for test data : 0.7225    <br>
   
-2) Nearest Centroid
-  -params : n_centroids * dim_centroid = 20*(3*182) = 10920
-  -train accuracy : 83.58
-  -test accuracy : 83.01
+2) Nearest Centroid   <br>
+  -params : n_centroids * dim_centroid = 20*(3*182) = 10920   <br>
+  -train accuracy : 83.58   <br>
+  -test accuracy : 83.01    <br>
   
-3) K Nearest Neighbors
-   -params : 1 (slow performace)
-   -train accuracy : 100.0
-   -test accuracy : 94.78
+3) K Nearest Neighbors    <br>
+   -params : 1 (slow performace)    <br>
+   -train accuracy : 100.0    <br>
+   -test accuracy : 94.78     <br>
    
-Neural Networks based
-1) CNN
-  -params : 87500
-  -train accuracy : 99.53
-  -test accuracy : 96.73
+Neural Networks based   <br>
+1) CNN    <br>
+  -params : 87500   <br>
+  -train accuracy : 99.53   <br>
+  -test accuracy : 96.73    <br>
   
-2) LSTM
-  -params : 74820
-  -train accuracy : 99.72
-  -test accuracy : 97.28
+2) LSTM   <br>
+  -params : 74820   <br>
+  -train accuracy : 99.72   <br>
+  -test accuracy : 97.28    <br>
