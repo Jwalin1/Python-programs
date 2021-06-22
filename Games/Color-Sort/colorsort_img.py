@@ -1,12 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from PIL import Image
 
 """### read image as np array"""
 
 def read_img(img_name):
-  tubes_img = plt.imread(img_name)
+  tubes_img = Image.open(img_name)
+  # resize image to the fixed size
+  tubes_img = tubes_img.resize((720, 1280), Image.ANTIALIAS)
   # original image is write protected so need to make a copy
-  tubes_img = tubes_img.copy()
+  tubes_img = np.array(tubes_img).copy()
   # crop the top part of the image
   tubes_img = tubes_img[200:1200]
   tubes_img = tubes_img.astype("float") / 255
