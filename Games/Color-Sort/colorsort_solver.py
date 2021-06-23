@@ -177,10 +177,17 @@ def seq_increment(original_tubes):
   else:
     return None
 
+import random
+
 """### sequential backtracking"""
 
-def seq_backtrack(original_tubes):
+def seq_backtrack(original_tubes, shuffle=False):
   tubes = copytubes(original_tubes)
+  if shuffle:
+    indxs = list(range(len(tubes)))
+    random.shuffle(indxs)
+    shuffled_tubes = [tubes[indx] for indx in indxs]
+    tubes = shuffled_tubes
   solved = False
   tubes_state = []
 
@@ -251,7 +258,11 @@ def seq_backtrack(original_tubes):
   if solved:
     moves = []
     for _, possible_moves, move_choice in tubes_state:
-        moves.append(possible_moves[move_choice][0])
+      move = possible_moves[move_choice][0]
+      if shuffle:
+        i,j = move
+        move = indxs[i], indxs[j]
+      moves.append(move)
     return moves
   else:
     return None
@@ -325,7 +336,7 @@ def random_search(original_tubes, n_runs=1000, check_all=False):
   else:
     return None
 
-# moves = seq_backtrack(original_tubes)
+# moves = seq_backtrack(original_tubes, shuffle=True)
 # printMoves(moves)
 
 # from colorsort_game import playGame, replaceColors
