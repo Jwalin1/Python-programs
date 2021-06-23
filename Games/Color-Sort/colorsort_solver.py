@@ -191,7 +191,7 @@ def seq_backtrack(original_tubes, shuffle=False):
   solved = False
   tubes_state = []
 
-  run=0; max_moves=0
+  run=1; max_moves=0
   while True:
     if allSame(tubes):
       solved = True
@@ -256,6 +256,7 @@ def seq_backtrack(original_tubes, shuffle=False):
     run += 1
       
   if solved:
+    print("found solution in run %d"%(run-1))
     moves = []
     for _, possible_moves, move_choice in tubes_state:
       move = possible_moves[move_choice][0]
@@ -275,7 +276,7 @@ from tqdm.notebook import tqdm
 def random_search(original_tubes, n_runs=1000, check_all=False):
   run_moves = []
 
-  for run in tqdm(range(n_runs)):
+  for run in tqdm(1,range(n_runs)+1):
     tubes = copytubes(original_tubes)
     moves_tested = []
     moves = []
