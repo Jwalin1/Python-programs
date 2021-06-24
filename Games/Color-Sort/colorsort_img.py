@@ -139,9 +139,9 @@ def process_img(img_name):
   tubes = equalize_colrs(tubes)
   return tubes
 
-tubes_img = read_img("tubes.jpeg")
-plt.imshow(tubes_img)
-tubes = process_img("tubes.jpeg")
+# tubes_img = read_img("tubes.jpeg")
+# plt.imshow(tubes_img)
+# tubes = process_img("tubes.jpeg")
 
 # from colorsort_game import plot_tubes
 
