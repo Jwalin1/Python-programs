@@ -40,11 +40,9 @@ def copytubes(tubes):
   return new_tubes
 
 def nonEmptyIndex(tube):
-  i=0
-  while i in range(len(tube)):
+  for i in range(len(tube)):
     if tube[i] != [1,1,1]:
       break
-    i+=1
   return i
 
 def check_transfer(tube1,tube2):
@@ -101,20 +99,19 @@ def transfer(tube1,tube2):
   return tube1,tube2, chunk_size
 
 def allSame(tubes):
-  same = True
   colrs = []
   for tube in tubes:
     t_indx = nonEmptyIndex(tube)
-    if t_indx == len(tube):  # all same if tube empty
-      continue
-
-    colr = tube[t_indx]
-    colrs.append(colr)
-    t_indx += 1
-    while t_indx in range(len(tube)):
-      if tube[t_indx] != colr:
-        return False
-      t_indx += 1
+    if t_indx != len(tube):  # all same if tube empty    
+      colr = tube[t_indx]
+      for i in range(t_indx+1,len(tube)):
+        if tube[i] != colr:
+          return False
+      if colr not in colrs:
+        colrs.append(colr)
+      else:
+        return False  
+  return True
 
   seen = []
   unique_list = [x for x in colrs if x not in seen and not seen.append(x)]
