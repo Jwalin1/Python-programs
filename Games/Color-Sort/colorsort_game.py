@@ -66,9 +66,6 @@ def check_transfer(tube1,tube2):
     t2_colr = tube2[t2_indx]
     if t1_colr != t2_colr:  # check if color matches
       return False
-  else:   # if tube empty
-    if allSame([tube1]):  # if all same
-      return False
 
   return True
 
