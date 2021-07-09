@@ -35,6 +35,24 @@ original_tubes = [
           [[1,1,1]]*4, [[1,1,1]]*4
 ]
 
+# exmaple 4
+original_tubes = [
+          [[0.6901960784313725, 0.2901960784313726, 0.0], [0.9490196078431372, 0.0, 0.7058823529411765], [0.9921568627450981, 0.5450980392156862, 0.16470588235294117], [0.6901960784313725, 0.2901960784313726, 0.0]] ,
+          [[1.0, 0.4235294117647059, 0.5372549019607843], [0.4549019607843137, 0.4549019607843137, 0.4549019607843137], [0.12156862745098039, 0.996078431372549, 0.9215686274509803], [0.5372549019607843, 0.12156862745098039, 0.9921568627450981]] ,
+          [[0.9490196078431372, 0.0, 0.7058823529411765], [0.4549019607843137, 0.4549019607843137, 0.4549019607843137], [0.9921568627450981, 0.5450980392156862, 0.16470588235294117], [1.0, 0.050980392156862744, 0.00392156862745098]] ,
+          [[0.25098039215686274, 0.5686274509803921, 0.9921568627450981], [1.0, 0.050980392156862744, 0.00392156862745098], [0.6901960784313725, 0.2901960784313726, 0.0], [1.0, 0.4235294117647059, 0.5372549019607843]] ,
+          [[0.9921568627450981, 0.5450980392156862, 0.16470588235294117], [0.996078431372549, 0.8784313725490196, 0.20392156862745098], [0.25098039215686274, 0.5686274509803921, 0.9921568627450981], [0.0, 0.7137254901960784, 0.4235294117647059]] ,
+          [[0.996078431372549, 0.8784313725490196, 0.20392156862745098], [0.00784313725490196, 0.996078431372549, 0.07450980392156863], [0.9921568627450981, 0.5450980392156862, 0.16470588235294117], [0.25098039215686274, 0.5686274509803921, 0.9921568627450981]] ,
+          [[0.25098039215686274, 0.5686274509803921, 0.9921568627450981], [0.00784313725490196, 0.996078431372549, 0.07450980392156863], [0.00784313725490196, 0.996078431372549, 0.07450980392156863], [0.12156862745098039, 0.996078431372549, 0.9215686274509803]] ,
+          [[1.0, 0.4235294117647059, 0.5372549019607843], [0.5372549019607843, 0.12156862745098039, 0.9921568627450981], [0.0, 0.7137254901960784, 0.4235294117647059], [0.4549019607843137, 0.4549019607843137, 0.4549019607843137]] ,
+          [[0.4549019607843137, 0.4549019607843137, 0.4549019607843137], [0.00784313725490196, 0.996078431372549, 0.07450980392156863], [0.0, 0.7137254901960784, 0.4235294117647059], [0.996078431372549, 0.8784313725490196, 0.20392156862745098]] ,
+          [[0.5372549019607843, 0.12156862745098039, 0.9921568627450981], [0.9490196078431372, 0.0, 0.7058823529411765], [0.6901960784313725, 0.2901960784313726, 0.0], [0.12156862745098039, 0.996078431372549, 0.9215686274509803]] ,
+          [[0.0, 0.7137254901960784, 0.4235294117647059], [0.5372549019607843, 0.12156862745098039, 0.9921568627450981], [0.9490196078431372, 0.0, 0.7058823529411765], [0.12156862745098039, 0.996078431372549, 0.9215686274509803]] ,
+          [[0.996078431372549, 0.8784313725490196, 0.20392156862745098], [1.0, 0.050980392156862744, 0.00392156862745098], [1.0, 0.050980392156862744, 0.00392156862745098], [1.0, 0.4235294117647059, 0.5372549019607843]] ,
+          [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]] ,
+          [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]]
+]
+
 def copytubes(tubes):
   new_tubes = [list(tube) for tube in tubes]
   return new_tubes
@@ -101,32 +119,27 @@ def transfer(tube1,tube2):
   return tube1,tube2, chunk_size
 
 def allSame(tubes):
-  same = True
   colrs = []
   for tube in tubes:
     t_indx = nonEmptyIndex(tube)
-    if t_indx == len(tube):  # all same if tube empty
-      continue
+    if t_indx != len(tube):  # all same if tube empty    
+      colr = tube[t_indx]
+      for i in range(t_indx+1,len(tube)):
+        if tube[i] != colr:
+          return False
+      if colr not in colrs:
+        colrs.append(colr)
+      else:
+        return False  
+  return True
 
-    colr = tube[t_indx]
-    colrs.append(colr)
-    t_indx += 1
-    while t_indx in range(len(tube)):
-      if tube[t_indx] != colr:
-        return False
-      t_indx += 1
-
-  seen = []
-  unique_list = [x for x in colrs if x not in seen and not seen.append(x)]
-  if len(colrs) != len(unique_list):
-    return False
-
-  return same
-
-def printMoves(moves):
+def printMoves(original_tubes,moves):
+  tubes = copytubes(original_tubes)
   if moves is not None:
+    print("score: %d"%(tubes_score(tubes)))
     for k,(i,j) in enumerate(moves):
-      print("move:%d -> transfer tube%d to tube%d"%(k+1,i+1,j+1))
+      transfer(tubes[i],tubes[j])
+      print("move:%d -> transfer tube%d to tube%d, score: %d"%(k+1,i+1,j+1,tubes_score(tubes)))
   else:
     print("failed")
 
@@ -168,21 +181,47 @@ def seq_increment(original_tubes):
   else:
     return None
 
-import random
+def tubes_score(tubes):
+  total_score = 0
+  for tube in tubes:
+    t_indx = nonEmptyIndex(tube)
+    if t_indx != len(tube):
+      score=1; colr=tube[t_indx]
+      for i in range(t_indx+1, len(tube)):
+        # for n consecutive colors in a tube
+        # score is given as 4^n
+        if tube[i] == colr:
+          score *= 4
+        else:
+          if score > 1:
+            total_score += score
+          colr = tube[i]
+          score = 1
+      if score > 1:
+        total_score += score
+    # subtract 1 for every empty tube
+    # so that initial moves would have higher score than tubes being empty
+    else:
+      total_score -= 1    
+  return total_score
+
+import numpy as np
 
 """### sequential backtracking"""
 
-def seq_backtrack(original_tubes, shuffle=False):
+def seq_backtrack(original_tubes, shuffle=False, seed=None):
   tubes = copytubes(original_tubes)
   if shuffle:
     indxs = list(range(len(tubes)))
-    random.shuffle(indxs)
+    if seed is not None:
+      rng = np.random.default_rng(seed)
+    np.random.shuffle(indxs)
     shuffled_tubes = [tubes[indx] for indx in indxs]
     tubes = shuffled_tubes
   solved = False
   tubes_state = []
 
-  run=1; max_moves=0
+  run=0; max_moves=0; prev_score=-100
   while True:
     if allSame(tubes):
       solved = True
@@ -198,18 +237,20 @@ def seq_backtrack(original_tubes, shuffle=False):
           new_tubes = copytubes(tubes)
           # pass a copy of the list so that the original is not changed after the transfer
           _, _, chunk_size = transfer(new_tubes[i], new_tubes[j])
-          if new_tubes not in visited_tubes:
+          score = tubes_score(new_tubes)
+          if (new_tubes not in visited_tubes) and (score > prev_score):
             #print("move:%d -> transfer tube%d to tube%d"%(move_indx,i+1,j+1))
             move = (i,j)
-            possible_moves.append((move, chunk_size))
+            possible_moves.append((move, score))
         # check transfer in reverse order
         if check_transfer(tube2, tube1):
           new_tubes = copytubes(tubes)
           _, _, chunk_size = transfer(new_tubes[j], new_tubes[i])
-          if new_tubes not in visited_tubes:
+          score = tubes_score(new_tubes)
+          if (new_tubes not in visited_tubes) and (score > prev_score):
             #print("move:%d -> transfer tube%d to tube%d"%(move_indx,j+1,i+1))
             move = (j,i)
-            possible_moves.append((move, chunk_size))
+            possible_moves.append((move, score))
       # end loop for tube to be transferred to
     # end loop for tube to be transferred from
 
@@ -229,14 +270,15 @@ def seq_backtrack(original_tubes, shuffle=False):
           transfer(tube1,tube2)
           break
     else:
-      # pick the move which results in the biggest chunk
+      # pick the move which results in the highest score
       possible_moves.sort(key=lambda x:x[1], reverse=True)
       move, _ = possible_moves[0]
       tubes_state.append([copytubes(tubes), possible_moves, 0])
-      # sending original tubes instead of copy to transfer function
       i, j = move
       tube1, tube2 = tubes[i], tubes[j]
+      # sending original tubes instead of copy to transfer function
       transfer(tube1,tube2)
+    prev_score = tubes_score(tubes)
 
     if len(tubes_state) == 0: break
 
@@ -259,15 +301,18 @@ def seq_backtrack(original_tubes, shuffle=False):
   else:
     return None
 
-import numpy as np
-from tqdm.notebook import tqdm
+moves = seq_backtrack(original_tubes, shuffle=True)
+printMoves(original_tubes,moves)
+
+from tqdm.auto import tqdm
 
 """### random search"""
 
 def random_search(original_tubes, n_runs=1000, check_all=False):
   run_moves = []
+  n_possibleMoves = np.math.factorial(len(tubes))/(2*np.math.factorial(len(tubes)-2))
 
-  for run in tqdm(1,range(n_runs)+1):
+  for run in tqdm(range(n_runs)):
     tubes = copytubes(original_tubes)
     moves_tested = []
     moves = []
@@ -283,7 +328,7 @@ def random_search(original_tubes, n_runs=1000, check_all=False):
         break
         
       # transfer from tube1 to tube2
-      if len(moves_tested) == np.math.factorial(len(tubes))/(2*np.math.factorial(len(tubes)-2)):
+      if len(moves_tested) == n_possibleMoves:
         break
       while True:
         i,j = np.random.choice(range(len(tubes)),2,replace=False)
@@ -328,11 +373,8 @@ def random_search(original_tubes, n_runs=1000, check_all=False):
   else:
     return None
 
-# moves = seq_backtrack(original_tubes, shuffle=True)
-# printMoves(moves)
-
 # from colorsort_game import playGame, replaceColors
 
 # colrs = {'p':"pink", 'b':"blue", 'r':"red", 'y':"yellow", 'g':"green"}
 # tubes = replaceColors(original_tubes, colrs)
-# playGame(tubes, moves)
+# playGame(original_tubes, moves)
