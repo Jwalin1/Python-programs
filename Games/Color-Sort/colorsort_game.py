@@ -40,7 +40,7 @@ def plot_tubes(tubes):
         axs[i//n_tubes1].bar(str(i+1), 1, bottom=j, fc=[1,1,1,0], width=0.5, edgecolor='k')
   plt.show()
 
-# plot_tubes(original_tubes)
+#plot_tubes(original_tubes)
 
 def nonEmptyIndex(tube):
   i=0
@@ -69,7 +69,7 @@ def check_transfer(tube1,tube2):
 
   return True
 
-def transfer(tube1,tube2):
+def transfer(tube1,tube2, chunk_size=None):
 
   # check if colr matches
   t1_indx = nonEmptyIndex(tube1)
@@ -77,13 +77,17 @@ def transfer(tube1,tube2):
   t1_colr = tube1[t1_indx]
 
   i = t1_indx
+  size = 0
   while i in range(len(tube1)):
-    j = (t2_indx-1) - (i-t1_indx)
+    j = (t2_indx-1) - size
     if (tube1[i] != t1_colr) or (j == -1):
       break
+    if chunk_size is not None:
+      if size == chunk_size:  break  
     tube2[j] = tube1[i]
     tube1[i] = [1,1,1]
     i+=1
+    size+=1
 
   return tube1,tube2
 
@@ -137,11 +141,11 @@ def playGame(original_tubes, moves=None):
       break
 
     if moves is None:
+      print("move:%d"%(move_indx+1))
       i = int(input("enter tube to transfer from: ")) - 1
       j = int(input("enter tube to transfer to: ")) - 1
     else:
-      i = moves[move_indx][0]
-      j = moves[move_indx][1]
+      i,j = moves[move_indx]
       print("move:%d -> transfer tube%d to tube%d"%(move_indx+1,i+1,j+1))
     tube1, tube2 = tubes[i], tubes[j]
 
@@ -151,4 +155,21 @@ def playGame(original_tubes, moves=None):
     else:
       print("invalid move")
 
-# playGame(original_tubes)
+def testGame(original_tubes, moves):
+  tubes = copytubes(original_tubes)
+
+  move_indx = 0
+  while True:
+    plot_tubes(tubes)
+    print("score : %d"%(tubes_score(tubes)))
+    if move_indx == len(moves):
+      break
+
+    (i,j), chunk_size = moves[move_indx]
+    print("move:%d -> transfer tube%d to tube%d, chunk_size=%d"%(move_indx+1,i+1,j+1,chunk_size))
+    tube1, tube2 = tubes[i], tubes[j]
+
+    transfer(tube1,tube2, chunk_size)
+    move_indx += 1
+
+#playGame(original_tubes)
